@@ -1,0 +1,33 @@
+{
+  "name": "mysql2s3",
+  "version": "0.0.1",
+  "description": "Dump MySQL databases to AWS S3",
+  "main": "mysql2s3.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kronostechnologies/docker-mysql2s3.git"
+  },
+  "keywords": [
+    "mysql",
+    "dump",
+    "aws",
+    "s3"
+  ],
+  "author": "Antoine Deschênes",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kronostechnologies/docker-mysql2s3/issues"
+  },
+  "homepage": "https://github.com/kronostechnologies/docker-mysql2s3#readme",
+  "dependencies": {
+    "aws-sdk": "^2.88.0",
+    "dateformat": "^2.0.0",
+    "dotenv": "^4.0.0",
+    "lzma-native": "^3.0.1",
+    "mysql": "^2.13.0",
+    "winston": "^2.3.1"
+  }
+}
