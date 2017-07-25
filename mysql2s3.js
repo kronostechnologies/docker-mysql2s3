@@ -45,6 +45,7 @@ const start = async () => {
 		logger.info(`Backup successful`);
 	}
 	catch(e) {
+		process.exitCode = 1;
 		logger.error(`Backup failed: ${e}`)
 	}
 };
