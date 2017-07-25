@@ -39,10 +39,10 @@ const config = {
 
 const start = async () => {
 	try {
-		logger.info(`Starting backup`);
+		logger.info('Starting backup');
 		const databases = await _getDatabases(config.backup.mysql);
 		await _launchConcurrentBackups(databases, config);
-		logger.info(`Backup successful`);
+		logger.info('Backup successful');
 	}
 	catch(e) {
 		process.exitCode = 1;
@@ -112,7 +112,6 @@ const _launchConcurrentBackups = async (databases, config) => {
 	logger.info(`${success} successful backups; ${skipped} skipped out of ${count}`);
 
 	const errors = count - skipped - success;
-
 	if(errors) {
 		throw `${errors} errors occurred!`;
 	}
