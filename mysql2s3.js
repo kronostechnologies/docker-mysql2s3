@@ -283,7 +283,6 @@ const _getMySqlDump = (config) => {
 			'-h', config.host,
 			'-u', config.user,
 			'--single-transaction',
-			'--compress',
 			config.database
 		],
 		{
