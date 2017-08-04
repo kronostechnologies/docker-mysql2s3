@@ -8,8 +8,16 @@ const zlib = require('zlib');
 const stream = require('stream');
 const mysql = require('mysql');
 
-const logger = require('winston');
-logger.level = process.env.LOG_LEVEL;
+const winston = require('winston');
+
+const logger = new (winston.Logger)({
+	transports: [
+		new (winston.transports.Console)({
+			'timestamp': true,
+			'level': process.env.LOG_LEVEL,
+			'colorize': true})
+	]
+});
 
 const AWS = require('aws-sdk');
 AWS.config.region = process.env.AWS_REGION;
@@ -88,9 +96,11 @@ const _launchConcurrentBackups = async (databases, config) => {
 			for(let database; database = databases.shift();) {
 				logger.debug(`Starting backup job from loop ${i + 1} of ${config.concurrency}`);
 				try {
+					const begin = (new Date()).getTime();
 					const result = await _backupDatabase(database, config.backup);
+					const end = ((new Date()).getTime() - begin);
 					if(result) {
-						logger.info(`'${database}' backup successful`);
+						logger.info(`'${database}' backup finished in ${end}s`);
 						success++;
 					}
 					else {
@@ -285,11 +295,11 @@ const _getMySqlDump = (config) => {
 
 	const onclose = (code, signal) => {
 		if(code === 0) {
-			config.success('mysqldump finished successfully');
+			config.success(`mysqldump '${config.database}' finished successfully`);
 			config.stream.end();
 		}
 		else {
-			config.error(`mysqldump exited with ${code || signal}`);
+			config.error(`mysqldump '${config.database}' exited with ${code || signal}`);
 		}
 	};
 
@@ -297,7 +307,7 @@ const _getMySqlDump = (config) => {
 
 	mysqldump.on('error', (error) => {
 		mysqldump.removeListener('close', onclose);
-		config.error(`could not start mysqldump: ${error}`);
+		config.error(`could not start mysqldump '${config.database}': ${error}`);
 	});
 
 	return mysqldump;
