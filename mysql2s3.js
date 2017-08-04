@@ -235,24 +235,21 @@ const _getS3Upload = (config) => {
 		Body: config.stream
 	};
 
-	const s3upload = S3.upload(s3params, s3options, (error, data) => {
+	return S3.upload(s3params, s3options, (error, data) => {
 		if(error) {
 			config.error(error);
 		}
 		else {
 			config.success(data);
 		}
-	});
-
-	s3upload.on('httpUploadProgress', (progress) => {
+	}).on('httpUploadProgress', (progress) => {
+		console.log(progress);
 		logger.debug(`${database} chunk uploaded to S3 (${progress.loaded} bytes)`);
 
 		if(progress.total && progress.total === progress.loaded) {
 			logger.info(`${database} finished uploading to S3 (${progress.total} bytes)`);
 		}
 	});
-
-	return s3upload;
 };
 
 /**
