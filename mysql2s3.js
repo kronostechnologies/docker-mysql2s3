@@ -23,6 +23,8 @@ const AWS = require('aws-sdk');
 AWS.config.region = process.env.AWS_REGION;
 const S3 = new AWS.S3();
 
+let bytes = 0;
+
 const config = {
 	concurrency: process.env.CONCURRENCY,
 	backup: {
@@ -120,6 +122,7 @@ const _launchConcurrentBackups = async (databases, config) => {
 	await Promise.all(loops);
 
 	logger.info(`${success} successful backups; ${skipped} skipped out of ${count}`);
+	logger.info(`${bytes} bytes uploaded`);
 
 	const errors = count - skipped - success;
 	if(errors) {
@@ -256,6 +259,7 @@ const _getS3Upload = (config) => {
 		logger.debug(`${config.key} chunk uploaded to S3 (${progress.loaded} bytes)`);
 
 		if(progress.total && progress.total === progress.loaded) {
+			bytes += progress.total;
 			logger.info(`${config.key} finished uploading to S3 (${progress.total} bytes)`);
 		}
 	});
