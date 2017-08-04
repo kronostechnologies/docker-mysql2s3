@@ -251,6 +251,8 @@ const _getS3Upload = (config) => {
 			logger.info(`${database} finished uploading to S3 (${progress.total} bytes)`);
 		}
 	});
+
+	return s3upload;
 };
 
 /**
