@@ -100,7 +100,7 @@ const _launchConcurrentBackups = async (databases, config) => {
 				try {
 					const begin = (new Date()).getTime();
 					const result = await _backupDatabase(database, config.backup);
-					const end = ((new Date()).getTime() - begin);
+					const end = ((new Date()).getTime() - begin)/1000;
 					if(result) {
 						logger.info(`'${database}' backup finished in ${end}s`);
 						success++;
