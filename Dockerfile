@@ -8,4 +8,4 @@ COPY ["package.json", ".yarnclean", "yarn.lock", "/code/"]
 RUN yarn install && yarn clean && yarn cache clean
 COPY [".env", "mysql2s3.js", "README.md", "LICENSE", "/code/"]
 
-CMD ./mysql2s3.js
+CMD node --expose-gc ./mysql2s3.js

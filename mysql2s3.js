@@ -109,6 +109,7 @@ const _launchConcurrentBackups = async (databases, config) => {
 						logger.debug(`'${database}' backup skipped...`);
 						skipped++;
 					}
+					gc();
 				}
 				catch(e) {
 					logger.error(`'${database}' backup error: ${e}`);
@@ -141,7 +142,9 @@ const _backupDatabase = async (database, config) => {
 		logger.info(`'${database}' backup started`);
 		logger.debug(s3key);
 
-		const data_stream = new stream.PassThrough();
+		const data_stream = new stream.PassThrough({
+			highWaterMark: 131072
+		});
 
 		const compressed_stream = _getCompressedStream({
 			type: config.compression.type,
@@ -289,12 +292,21 @@ const _getMySqlDump = (config) => {
 			stdio: ['ignore', 'pipe', 'ignore'],
 			env: {
 				MYSQL_PWD: config.password
-			}
+			},
+			maxBuffer: 1048576
 		}
 	);
 
 	mysqldump.stdout.on('data', (chunk) => {
-		config.stream.write(chunk);
+		if(!config.stream.write(chunk)) {
+			mysqldump.kill('SIGSTOP');
+			mysqldump.stdout.pause();
+
+			config.stream.once('drain', () => {
+				mysqldump.kill('SIGCONT');
+				mysqldump.stdout.resume();
+			});
+		}
 	});
 
 	const onclose = (code, signal) => {
