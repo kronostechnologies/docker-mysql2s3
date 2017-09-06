@@ -299,8 +299,8 @@ const _getMySqlDump = (config) => {
 
 	mysqldump.stdout.on('data', (chunk) => {
 		if(!config.stream.write(chunk)) {
-			mysqldump.kill('SIGSTOP');
 			mysqldump.stdout.pause();
+			mysqldump.kill('SIGSTOP');
 
 			config.stream.once('drain', () => {
 				mysqldump.kill('SIGCONT');
