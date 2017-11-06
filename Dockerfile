@@ -5,7 +5,7 @@ RUN apk update && apk upgrade && apk add --no-cache mariadb-client && rm -rf /va
 
 WORKDIR /code
 COPY ["package.json", ".yarnclean", "yarn.lock", "/code/"]
-RUN yarn install && yarn clean && yarn cache clean
+RUN yarn install && yarn autoclean && yarn cache clean
 COPY [".env", "mysql2s3.js", "README.md", "LICENSE", "/code/"]
 
 CMD node --expose-gc ./mysql2s3.js
