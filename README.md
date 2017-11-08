@@ -37,23 +37,52 @@ These are the permissions needed for this container to successfully backup your 
 
 ## Environment Variables
 
-```
-AWS_REGION
-AWS_ACCESS_KEY_ID
-AWS_SECRET_ACCESS_KEY
-AWS_S3_BUCKET
-AWS_S3_QUEUESIZE
-AWS_S3_PARTSIZE
-COMPRESSION_TYPE
-COMPRESSION_LEVEL
-COMPRESSION_THREADS
-CONCURRENCY
-KEYNAME_TEMPLATE
-LOG_LEVEL
-MYSQL_HOST
-MYSQL_USER
-MYSQL_PWD
-```
+### AWS_REGION
+The region of your aws account.
+
+### AWS_ACCESS_KEY_ID
+The access key id of your aws account.
+
+### AWS_SECRET_ACCESS_KEY
+The secret access key of your aws account.
+
+### AWS_S3_BUCKET
+The S3 bucket name where you want the backup to live.
+
+### AWS_S3_QUEUESIZE
+The number of part the S3 upload can handle in parrallel.
+
+### AWS_S3_PARTSIZE
+The size in bytes of each individuals parts to be uploaded.
+
+### COMPRESSION_TYPE
+Supported values are `xz` and `gz`
+
+### COMPRESSION_LEVEL
+Whatever compression level the compression type support. Usually an integer 1 to 9.
+
+### COMPRESSION_THREADS
+Number of threads the compression algorithm use. This works only with `xz` compression type.
+
+### CONCURRENCY
+The number of process the container will spawn. If this value is too high, you might ddos your database.
+
+### KEYNAME_TEMPLATE
+The format used for the files stored inside the backup folders.
+If you pass this option via `-e KEYNAME_TEMPLATE="yyyy-mm-dd-$database"`, make sure to properly escape the value.
+The value can be anything that NodeJS's dateFormat understand. The special string `$database` will be replaced with the database name.
+
+### LOG_LEVEL
+The loglevel of this container. Valid values are `info`, `debug`.
+
+### MYSQL_HOST
+The mysql url.
+
+### MYSQL_USER
+The mysql username.
+
+### MYSQL_PWD
+The mysql password.
 
 ## Troubleshoot
 ### Missing credentials in config
@@ -62,3 +91,5 @@ Your AWS credentials are missing. You need to add both environment variable `AWS
 ### Access Denied
 This most likely means that the aws user you use does not have access to your bucket.
 
+## Reference
+AWS S3 upload: http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3/ManagedUpload.html
