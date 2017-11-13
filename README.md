@@ -67,13 +67,12 @@ Number of threads the compression algorithm use. This works only with `xz` compr
 ### CONCURRENCY
 The number of process the container will spawn. If this value is too high, you might ddos your database.
 
-### KEYNAME_TEMPLATE
-The format used for the files stored inside the backup folders.
-If you pass this option via `-e KEYNAME_TEMPLATE="yyyy-mm-dd-$database"`, make sure to properly escape the value.
-The value can be anything that NodeJS's dateFormat understand. The special string `$database` will be replaced with the database name.
-
 ### LOG_LEVEL
 The loglevel of this container. Valid values are `info`, `debug`.
+
+### LOG_CLEAN
+Set to false to not clean the log for sensitive information. Do not use this in production. Default is true; logs are never contains sensitive information.
+When sensitive information is displayed, `*****` will replace the value otherwise, `#EMPTY#` if there's no value.
 
 ### MYSQL_HOST
 The mysql url.

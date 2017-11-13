@@ -37,7 +37,6 @@ const config = {
 			bucket: process.env.AWS_S3_BUCKET,
 			queueSize: process.env.AWS_S3_QUEUESIZE,
 			partSize: process.env.AWS_S3_PARTSIZE,
-			keyNameTemplate: process.env.KEYNAME_TEMPLATE,
 		},
 		compression: {
 			type: process.env.COMPRESSION_TYPE,
@@ -50,6 +49,9 @@ const config = {
 const start = async () => {
 	try {
 		logger.info('Starting backup');
+		logger.debug('### ENVIRONMENT ###');
+		logger.debug(_cleanSensitiveEnvInformation(process.env));
+		logger.debug('#####################');
 		const databases = await _getDatabases(config.backup.mysql);
 		await _launchConcurrentBackups(databases, config);
 		logger.info('Backup successful');
@@ -132,7 +134,7 @@ const _launchConcurrentBackups = async (databases, config) => {
 };
 
 const _backupDatabase = async (database, config) => {
-	const s3key = dateFormat(new Date(), config.s3.keyNameTemplate.replace('$database', database));
+	const s3key = dateFormat(new Date(), "UTC:yyyy'/'mm'/'dd'/" + database + ".sql.xz'");
 
 	if(await _getS3ObjectExists({bucket: config.s3.bucket, key: s3key})) {
 		return false;
@@ -363,5 +365,16 @@ const _getCompressedStream = (config) => {
 	}
 
 };
+
+const _cleanSensitiveEnvInformation = (env) => {
+	if(env.LOG_CLEAN) {
+		let env_copy = JSON.parse(JSON.stringify(env));
+		env_copy.AWS_SECRET_ACCESS_KEY = env_copy.AWS_SECRET_ACCESS_KEY ? '*****' : '#EMPTY#';
+		env_copy.MYSQL_PWD = env_copy.MYSQL_PWD ? '*****' : '#EMPTY#';
+		return env_copy;
+	}
+	return env;
+}
+
 
 start();
