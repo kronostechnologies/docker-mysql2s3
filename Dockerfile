@@ -1,4 +1,4 @@
-FROM node:8-alpine
+FROM node:12-alpine
 MAINTAINER "sysadmin@kronostechnologies.com"
 
 RUN apk update && apk upgrade && apk add --no-cache mariadb-client && rm -rf /var/cache/apk/*
