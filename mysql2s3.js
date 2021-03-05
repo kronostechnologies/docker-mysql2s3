@@ -12,9 +12,9 @@ const winston = require('winston');
 
 const logger = winston.createLogger({
 	level: process.env.LOG_LEVEL,
-	format: format.combine(
-		format.timestamp(),
-		format.colorize(),
+	format: winston.format.combine(
+		winston.format.timestamp(),
+		winston.format.colorize(),
 	),
 	transports: [
 		new winston.transports.Console()
