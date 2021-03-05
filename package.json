@@ -1,6 +1,6 @@
 {
   "name": "mysql2s3",
-  "version": "0.0.3",
+  "version": "0.1.0-0",
   "description": "Dump MySQL databases to AWS S3",
   "main": "mysql2s3.js",
   "scripts": {
