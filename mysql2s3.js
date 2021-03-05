@@ -10,12 +10,14 @@ const mysql = require('mysql');
 
 const winston = require('winston');
 
-const logger = new (winston.Logger)({
+const logger = winston.createLogger({
+	level: process.env.LOG_LEVEL,
+	format: format.combine(
+		format.timestamp(),
+		format.colorize(),
+	),
 	transports: [
-		new (winston.transports.Console)({
-			'timestamp': true,
-			'level': process.env.LOG_LEVEL,
-			'colorize': true})
+		new winston.transports.Console()
 	]
 });
 

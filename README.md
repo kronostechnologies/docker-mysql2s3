@@ -6,7 +6,7 @@ This image is meant to backup a mysql database to aws S3.
 
 Below an example with everything you need to define for this container to work properly.
 ```
-docker run --rm -e AWS_REGION=us-east-1 -e AWS_ACCESS_KEY_ID=you-acces-key-id -e AWS_SECRET_ACCESS_KEY=you-secret-acces-key -e AWS_S3_BUCKET="some.s3.bucket" -e LOG_LEVEL=debug -e MYSQL_HOST=mysql-host-name -e MYSQL_USER=username -e MYSQL_PWD=password kronostechnologies/mysql2s3
+docker run --rm -e AWS_REGION=us-east-1 -e AWS_ACCESS_KEY_ID=your-access-key-id -e AWS_SECRET_ACCESS_KEY=your-secret-access-key -e AWS_S3_BUCKET="some.s3.bucket" -e LOG_LEVEL=debug -e MYSQL_HOST=mysql-host-name -e MYSQL_USER=username -e MYSQL_PWD=password kronostechnologies/mysql2s3
 ```
 
 You may also define all environment variable in a file and run the docker like this.
