@@ -1,6 +1,6 @@
 # Docker MySQL to S3
 
-This image is meant to backup a mysql database to aws S3.
+This image is meant to backup a MySQL database to AWS S3.
 
 ## Usage
 
@@ -37,58 +37,20 @@ These are the permissions needed for this container to successfully backup your 
 
 ## Environment Variables
 
-### AWS_REGION
-The region of your aws account.
-
-### AWS_ACCESS_KEY_ID
-The access key id of your aws account.
-
-### AWS_SECRET_ACCESS_KEY
-The secret access key of your aws account.
-
-### AWS_S3_BUCKET
-The S3 bucket name where you want the backup to live.
-
-### AWS_S3_QUEUESIZE
-The number of part the S3 upload can handle in parrallel.
-
-### AWS_S3_PARTSIZE
-The size in bytes of each individuals parts to be uploaded.
-
-### COMPRESSION_TYPE
-Supported values are `xz` and `gz`
-
-### COMPRESSION_LEVEL
-Whatever compression level the compression type support. Usually an integer 1 to 9.
-
-### COMPRESSION_THREADS
-Number of threads the compression algorithm use. This works only with `xz` compression type.
-
-### CONCURRENCY
-The number of process the container will spawn. If this value is too high, you might ddos your database.
-
-### LOG_LEVEL
-The loglevel of this container. Valid values are `info`, `debug`.
-
-### LOG_CLEAN
-Set to false to not clean the log for sensitive information. Do not use this in production. Default is true; logs are never contains sensitive information.
-When sensitive information is displayed, `*****` will replace the value otherwise, `#EMPTY#` if there's no value.
-
-### MYSQL_HOST
-The mysql url.
-
-### MYSQL_USER
-The mysql username.
-
-### MYSQL_PWD
-The mysql password.
-
-## Troubleshoot
-### Missing credentials in config
-Your AWS credentials are missing. You need to add both environment variable `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
-
-### Access Denied
-This most likely means that the aws user you use does not have access to your bucket.
-
-## Reference
-AWS S3 upload: http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3/ManagedUpload.html
+| Variable              | Default | Description                                                 |
+| --------------------- | ------- | ----------------------------------------------------------- |
+| AWS_REGION            |         | S3 bucket region                                            |
+| AWS_ACCESS_KEY_ID     |         | AWS access key. Leave unset when using an instance role     |
+| AWS_SECRET_ACCESS_KEY |         | AWS secret key. Leave unset when using an instance role.    |
+| AWS_S3_BUCKET         |         | S3 bucket name                                              |
+| AWS_S3_QUEUESIZE      | 4       | S3 multipart parallel upload count                          |
+| AWS_S3_PARTSIZE       | 5242880 | S3 multipart chunk size in bytes                            |
+| COMPRESSION_TYPE      | xz      | Compression type (gz, xz, blank: uncompressed).             |
+| COMPRESSION_LEVEL     | 2       | Compression level (1-9).                                    |
+| COMPRESSION_THREADS   | 1       | Compression threads per dump process (0:auto, n:n threads). |
+| CONCURRENCY           | 1       | Number of concurrent dumps.                                 |
+| LOG_LEVEL             | info    | Container log level.                                        |
+| LOG_CLEAN             | true    | Cleans up sensitive variables in debug output.              |
+| MYSQL_HOST            |         | MySQL hostname                                              |
+| MYSQL_USER            |         | MySQL username                                              |
+| MYSQL_PWD             |         | MySQL password                                              |
