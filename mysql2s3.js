@@ -61,6 +61,9 @@ const start = async () => {
 	catch(e) {
 		process.exitCode = 1;
 		logger.error(`Backup failed: ${e}`)
+		if (e.stack) {
+			logger.error(e.stack);
+		}
 	}
 };
 
