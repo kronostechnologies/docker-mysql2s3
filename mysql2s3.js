@@ -62,7 +62,7 @@ const start = async () => {
 		process.exitCode = 1;
 		logger.error(`Backup failed: ${e}`)
 		if (e.stack) {
-			logger.error(e.stack);
+			logger.debug(e.stack);
 		}
 	}
 };
@@ -120,6 +120,9 @@ const _launchConcurrentBackups = async (databases, config) => {
 				}
 				catch(e) {
 					logger.error(`'${database}' backup error: ${e}`);
+					if (e.stack) {
+						logger.debug(e.stack);
+					}
 				}
 			}
 
