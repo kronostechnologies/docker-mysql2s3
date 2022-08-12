@@ -45,6 +45,7 @@ These are the permissions needed for this container to successfully backup your 
 | AWS_S3_BUCKET         |         | S3 bucket name                                              |
 | AWS_S3_QUEUESIZE      | 4       | S3 multipart parallel upload count                          |
 | AWS_S3_PARTSIZE       | 5242880 | S3 multipart chunk size in bytes                            |
+| AWS_S3_PREFIX         |         | Add a prefix dir on the S3 bucket                           |
 | COMPRESSION_TYPE      | xz      | Compression type (gz, xz, blank: uncompressed).             |
 | COMPRESSION_LEVEL     | 2       | Compression level (1-9).                                    |
 | COMPRESSION_THREADS   | 1       | Compression threads per dump process (0:auto, n:n threads). |

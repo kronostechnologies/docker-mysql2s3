@@ -39,6 +39,7 @@ const config = {
 			bucket: process.env.AWS_S3_BUCKET,
 			queueSize: process.env.AWS_S3_QUEUESIZE,
 			partSize: process.env.AWS_S3_PARTSIZE,
+			prefix: process.env.AWS_S3_PREFIX || '',
 		},
 		compression: {
 			type: process.env.COMPRESSION_TYPE,
@@ -143,6 +144,10 @@ const _launchConcurrentBackups = async (databases, config) => {
 
 const _backupDatabase = async (database, config) => {
 	const s3key = dateFormat(new Date(), "UTC:yyyy'/'mm'/'dd'/" + database + ".sql.xz'");
+
+	if(config.s3.prefix != '') {
+		s3key = config.s3.prefix + '/' + s3key
+	}
 
 	if(await _getS3ObjectExists({bucket: config.s3.bucket, key: s3key})) {
 		return false;
