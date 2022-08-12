@@ -143,7 +143,7 @@ const _launchConcurrentBackups = async (databases, config) => {
 };
 
 const _backupDatabase = async (database, config) => {
-	const s3key = dateFormat(new Date(), "UTC:yyyy'/'mm'/'dd'/" + database + ".sql.xz'");
+	let s3key = dateFormat(new Date(), "UTC:yyyy'/'mm'/'dd'/" + database + ".sql.xz'");
 
 	if(config.s3.prefix != '') {
 		s3key = config.s3.prefix + '/' + s3key
