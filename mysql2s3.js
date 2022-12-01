@@ -302,7 +302,7 @@ const _getMySqlDump = (config) => {
 			'-h', config.host,
 			'-u', config.user,
 			'--single-transaction',
-			'--max_allowed_packet', config.max_allowed_packet,
+			`--max_allowed_packet=${config.max_allowed_packet}`,
 			config.database
 		],
 		{
