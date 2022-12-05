@@ -189,6 +189,7 @@ const _backupDatabase = async (database, config) => {
 			user: config.mysql.user,
 			password: config.mysql.password,
 			database: database,
+			max_allowed_packet: config.mysql.max_allowed_packet,
 			stream: data_stream,
 			success: ondumpsuccess,
 			error: ondumperror
@@ -302,7 +303,7 @@ const _getMySqlDump = (config) => {
 			'-h', config.host,
 			'-u', config.user,
 			'--single-transaction',
-			`--max_allowed_packet=${config.max_allowed_packet}`,
+			'--max_allowed_packet', config.max_allowed_packet,
 			config.database
 		],
 		{
