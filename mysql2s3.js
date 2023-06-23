@@ -105,25 +105,27 @@ const _launchConcurrentBackups = async (databases, config) => {
 	for(let i = 0; i < config.concurrency; i++) {
 		loops.push((async () => {
 			for(let database; database = databases.shift();) {
-				logger.debug(`Starting backup job from loop ${i + 1} of ${config.concurrency}`);
-				try {
-					const begin = (new Date()).getTime();
-					const result = await _backupDatabase(database, config.backup);
-					const end = ((new Date()).getTime() - begin)/1000;
-					if(result) {
-						logger.info(`'${database}' backup finished in ${end}s`);
-						success++;
+				if(database != "mysql") {
+					logger.debug(`Starting backup job from loop ${i + 1} of ${config.concurrency}`);
+					try {
+						const begin = (new Date()).getTime();
+						const result = await _backupDatabase(database, config.backup);
+						const end = ((new Date()).getTime() - begin)/1000;
+						if(result) {
+							logger.info(`'${database}' backup finished in ${end}s`);
+							success++;
+						}
+						else {
+							logger.debug(`'${database}' backup skipped...`);
+							skipped++;
+						}
+						gc();
 					}
-					else {
-						logger.debug(`'${database}' backup skipped...`);
-						skipped++;
-					}
-					gc();
-				}
-				catch(e) {
-					logger.error(`'${database}' backup error: ${e}`);
-					if (e.stack) {
-						logger.debug(e.stack);
+					catch(e) {
+						logger.error(`'${database}' backup error: ${e}`);
+						if (e.stack) {
+							logger.debug(e.stack);
+						}
 					}
 				}
 			}
