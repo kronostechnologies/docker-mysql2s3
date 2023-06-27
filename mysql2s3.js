@@ -97,7 +97,7 @@ const _launchConcurrentBackups = async (databases, config) => {
 	let success = 0;
 	let skipped = 0;
 
-	const count = databases.length;
+	let count = databases.length;
 	logger.info(`${count} databases found`);
 
 	let loops = [];
