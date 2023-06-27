@@ -127,9 +127,10 @@ const _launchConcurrentBackups = async (databases, config) => {
 							logger.debug(e.stack);
 						}
 					}
+				} else {
+					count--;
 				}
 			}
-
 			logger.debug(`Loop ${i + 1} finished`);
 		})());
 	}
