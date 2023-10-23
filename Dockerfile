@@ -1,12 +1,10 @@
-FROM node:14 AS builder
-MAINTAINER "na-qc@equisoft.com"
+FROM node:18 AS builder
 
 WORKDIR /code
 COPY ["package.json", ".yarnclean", "yarn.lock", "/code/"]
 RUN yarn install && yarn autoclean --force && yarn cache clean
 
-
-FROM node:14-slim
+FROM node:18-slim
 
 COPY --from=builder /code /code
 WORKDIR /code

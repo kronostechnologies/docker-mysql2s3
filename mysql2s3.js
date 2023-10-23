@@ -34,7 +34,7 @@ const config = {
 			host: process.env.MYSQL_HOST,
 			user: process.env.MYSQL_USER,
 			password: process.env.MYSQL_PWD,
-			max_allowed_packet: process.env.MAX_ALLOWED_PACKET || "4194304",
+			max_allowed_packet: process.env.MAX_ALLOWED_PACKET || "256000000",
 		},
 		s3: {
 			bucket: process.env.AWS_S3_BUCKET,
@@ -307,6 +307,7 @@ const _getMySqlDump = (config) => {
 			'-u', config.user,
 			'--single-transaction',
 			'--max_allowed_packet', config.max_allowed_packet,
+			'--skip-lock-tables',
 			config.database
 		],
 		{
