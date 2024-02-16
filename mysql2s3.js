@@ -7,6 +7,7 @@ const lzma = require('lzma-native');
 const zlib = require('zlib');
 const stream = require('stream');
 const mysql = require('mysql');
+const sentry = require("@sentry/node");
 
 const winston = require('winston');
 
@@ -29,6 +30,7 @@ let bytes = 0;
 
 const config = {
 	concurrency: process.env.CONCURRENCY,
+	environment: process.env.ENVIRONMENT || '',
 	backup: {
 		mysql: {
 			host: process.env.MYSQL_HOST,
@@ -46,25 +48,64 @@ const config = {
 			type: process.env.COMPRESSION_TYPE,
 			level: process.env.COMPRESSION_LEVEL,
 			threads: process.env.COMPRESSION_THREADS,
+		},
+		sentry: {
+			dsn: process.env.SENTRY_DSN,
+			monitor_slug: process.env.SENTRY_MONITOR_SLUG,
 		}
 	}
 };
 
+if (config.sentry.dsn) {
+	if (!config.sentry.monitor_slug) {
+		throw new Error("SENTRY_MONITOR_SLUG is required when SENTRY_DSN is set");
+	}
+	sentry.init({
+		dsn: config.sentry.dsn,
+		environment: config.environment,
+		tracesSampleRate: 0.0,
+	});
+}
+
 const start = async () => {
+	let checkInId;
 	try {
 		logger.info('Starting backup');
 		logger.debug('### ENVIRONMENT ###');
 		logger.debug(_cleanSensitiveEnvInformation(process.env));
 		logger.debug('#####################');
+	
+		if (config.sentry.dsn) {
+			checkInId = sentry.captureCheckIn({
+				monitorSlug: config.sentry.monitor_slug,
+				status: "in_progress",
+			});
+		}
+
 		const databases = await _getDatabases(config.backup.mysql);
 		await _launchConcurrentBackups(databases, config);
 		logger.info('Backup successful');
+
+		if (config.sentry.dsn) {
+			sentry.captureCheckIn({
+				checkInId,
+				monitorSlug: config.sentry.monitor_slug,
+				status: "ok",
+			});
+		}
 	}
 	catch(e) {
 		process.exitCode = 1;
 		logger.error(`Backup failed: ${e}`)
 		if (e.stack) {
 			logger.debug(e.stack);
+		}
+		if (config.sentry.dsn && checkInId) {
+			sentry.captureCheckIn({
+				checkInId,
+				monitorSlug: config.sentry.monitor_slug,
+				status: "error",
+			});
 		}
 	}
 };

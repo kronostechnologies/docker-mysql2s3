@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/kronostechnologies/docker-mysql2s3#readme",
   "dependencies": {
+    "@sentry/node": "^7.101.1",
     "aws-sdk": "^2.88.0",
     "dateformat": "^4.5.1",
     "dotenv": "^8.2.0",
