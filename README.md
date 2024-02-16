@@ -55,3 +55,6 @@ These are the permissions needed for this container to successfully backup your 
 | MYSQL_HOST            |         | MySQL hostname                                              |
 | MYSQL_USER            |         | MySQL username                                              |
 | MYSQL_PWD             |         | MySQL password                                              |
+| ENVIRONMENT           |         | Environment name (ex. staging, ca-accp, ca-prod...)         |
+| SENTRY_DSN            |         | Sentry DSN, connection informations.                        |
+| SENTRY_MONITOR_SLUG   |         | Name of Sentry cron project, required if SENTRY_DSN is set  |
