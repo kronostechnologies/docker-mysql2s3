@@ -49,10 +49,10 @@ const config = {
 			level: process.env.COMPRESSION_LEVEL,
 			threads: process.env.COMPRESSION_THREADS,
 		},
-		sentry: {
-			dsn: process.env.SENTRY_DSN,
-			monitor_slug: process.env.SENTRY_MONITOR_SLUG,
-		}
+	},
+	sentry: {
+		dsn: process.env.SENTRY_DSN,
+		monitor_slug: process.env.SENTRY_MONITOR_SLUG,
 	}
 };
 
