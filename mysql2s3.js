@@ -349,6 +349,7 @@ const _getMySqlDump = (config) => {
 			'--single-transaction',
 			'--max_allowed_packet', config.max_allowed_packet,
 			'--skip-lock-tables',
+			'----set-gtid-purged=OFF',
 			config.database
 		],
 		{
