@@ -180,10 +180,10 @@ const _launchConcurrentBackups = async (databases, config) => {
 
 	logger.info(`${success} successful backups; ${skipped} skipped out of ${count}`);
 	logger.info(`${bytes} bytes uploaded`);
-
+	await new Promise(resolve => setTimeout(resolve, 180000)); // Wait 3 minutes before resolving to give mysqldump time to finish
+	
 	const errors = count - skipped - success;
 	if(errors) {
-		await new Promise(resolve => setTimeout(resolve, 180000)); // Wait 3 minutes before resolving to give mysqldump time to finish
 		throw `${errors} errors occurred!`;
 	}
 };
