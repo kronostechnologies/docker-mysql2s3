@@ -4,7 +4,7 @@ WORKDIR /code
 COPY ["package.json", ".yarnclean", "yarn.lock", "/code/"]
 RUN yarn install && yarn autoclean --force && yarn cache clean
 
-FROM node:20
+FROM node:20-alpine
 
 COPY --from=builder /code /code
 WORKDIR /code
