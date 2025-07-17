@@ -180,7 +180,7 @@ const _launchConcurrentBackups = async (databases, config) => {
 
 	logger.info(`${success} successful backups; ${skipped} skipped out of ${count}`);
 	logger.info(`${bytes} bytes uploaded`);
-
+	
 	const errors = count - skipped - success;
 	if(errors) {
 		throw `${errors} errors occurred!`;
@@ -245,7 +245,6 @@ const _backupDatabase = async (database, config) => {
 			if(mysqldump) {
 				mysqldump.kill();
 			}
-
 			reject(`S3 error: ${error.message}`);
 		};
 
@@ -347,9 +346,8 @@ const _getMySqlDump = (config) => {
 			'-h', config.host,
 			'-u', config.user,
 			'--single-transaction',
-			'--max_allowed_packet', config.max_allowed_packet,
 			'--skip-lock-tables',
-			'----set-gtid-purged=OFF',
+			'--set-gtid-purged=OFF',
 			config.database
 		],
 		{
