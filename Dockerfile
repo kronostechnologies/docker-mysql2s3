@@ -62,4 +62,5 @@ COPY --from=builder /code /code
 WORKDIR /code
 COPY [".env", "mysql2s3.js", "README.md", "LICENSE", "/code/"]
 
+USER 1000
 CMD ["node", "--expose-gc", "./mysql2s3.js"]

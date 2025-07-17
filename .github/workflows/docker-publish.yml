@@ -1,11 +1,6 @@
 name: Docker
 
 on:
-  pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
   push:
     tags:
       - '*'
@@ -17,7 +12,7 @@ jobs:
       - id: build_info
         name: build info
         run:
-          echo ::set-output name=tags::ghcr.io/${{ github.repository }}:latest-alpha-7
+          echo ::set-output name=tags::ghcr.io/${{ github.repository }}:${GITHUB_REF#refs/tags/},ghcr.io/${{ github.repository }}:latest
 
       - name: setup qemu
         uses: docker/setup-qemu-action@v1
@@ -33,9 +28,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           tags: ${{ steps.build_info.outputs.tags }}
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           push: true
-          no-cache: true
           labels: |
             org.opencontainers.image.title=${{ github.event.repository.name }}
             org.opencontainers.image.description=${{ github.event.repository.description }}
