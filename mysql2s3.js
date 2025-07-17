@@ -245,7 +245,7 @@ const _backupDatabase = async (database, config) => {
 			if(mysqldump) {
 				mysqldump.kill();
 			}
-
+			setTimeout(resolve, 180000); // Wait 3 minutes before resolving to give mysqldump time to finish
 			reject(`S3 error: ${error.message}`);
 		};
 
