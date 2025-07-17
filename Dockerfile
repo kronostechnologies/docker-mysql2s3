@@ -49,6 +49,7 @@ RUN wget https://dev.mysql.com/get/Downloads/MySQL-9.3/mysql-9.3.0.tar.gz && \
         -DWITH_ARCHIVE_STORAGE_ENGINE=OFF \
         -DWITH_CSV_STORAGE_ENGINE=OFF \
         -DWITH_HEAP_STORAGE_ENGINE=OFF \
+        -DWITH_AUTHENTICATION_CLIENT_PLUGINS=yes \
         -DWITH_MYISAM_STORAGE_ENGINE=OFF && \
     make -j$(nproc) && \
     make install && \

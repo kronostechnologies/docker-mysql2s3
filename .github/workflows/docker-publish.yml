@@ -17,7 +17,7 @@ jobs:
       - id: build_info
         name: build info
         run:
-          echo ::set-output name=tags::ghcr.io/${{ github.repository }}:latest-alpha-5
+          echo ::set-output name=tags::ghcr.io/${{ github.repository }}:latest-alpha-6
 
       - name: setup qemu
         uses: docker/setup-qemu-action@v1
