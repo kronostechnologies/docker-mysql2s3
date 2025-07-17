@@ -348,6 +348,7 @@ const _getMySqlDump = (config) => {
 			'-u', config.user,
 			'--single-transaction',
 			'--skip-lock-tables',
+			'--set-gtid-purged=OFF',
 			config.database
 		],
 		{
